@@ -194,3 +194,4 @@ cardRanks = [2, 3, 4, 5]
 cardSuits :: [String]
 cardSuits = ["H", "D", "C", "S"]
 
+undefined = error "Not implemented"
