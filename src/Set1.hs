@@ -53,3 +53,7 @@ generalB f ga gb seed = let (first, newSeed) = ga seed
 
 generalPair2 :: Gen a -> Gen b -> Gen (a, b)
 generalPair2 = generalB (\x y -> (x,y))
+
+repRandom :: [Gen a] -> Gen [a]
+repRandom (x:[]) seed = generalA (\a -> [a]) x seed
+repRandom (x:xs) seed = generalB (\a b -> a:b) x (repRandom xs) seed
