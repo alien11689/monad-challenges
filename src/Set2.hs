@@ -44,3 +44,19 @@ minimumMay (x:xs) = Just $ findMin x xs
           findMin cur (y:ys)
             | cur > y = findMin y ys
             | otherwise = findMin cur ys
+
+queryGreek :: GreekData -> String -> Maybe Double
+queryGreek gd key = let xs = lookupMay key gd
+                        max = superMaximum $ superTail xs
+                        h = superHead xs
+                    in superDiv max h
+                    where
+                        superDiv Nothing _ = Nothing
+                        superDiv _ Nothing = Nothing
+                        superDiv (Just a) (Just b) = divMay (fromIntegral a) (fromIntegral b)
+                        superTail Nothing = Nothing
+                        superTail (Just a) = tailMay a
+                        superMaximum Nothing = Nothing
+                        superMaximum (Just a) = maximumMay a
+                        superHead Nothing = Nothing
+                        superHead (Just a) = headMay a
