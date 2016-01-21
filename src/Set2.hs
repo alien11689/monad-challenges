@@ -60,3 +60,19 @@ queryGreek gd key = let xs = lookupMay key gd
                         superMaximum (Just a) = maximumMay a
                         superHead Nothing = Nothing
                         superHead (Just a) = headMay a
+
+link :: Maybe a -> (a -> Maybe b) -> Maybe b
+link Nothing _ = Nothing
+link (Just x) f = f x
+
+chain :: (a -> Maybe b) -> Maybe a -> Maybe b
+chain = flip link
+
+queryGreek2 :: GreekData -> String -> Maybe Double
+queryGreek2 gd key = let xs = lookupMay key gd
+                         t = link xs tailMay
+                         max = link t maximumMay
+                         h = link xs headMay
+                    in superDiv max h
+                    where superDiv (Just a) (Just b) = divMay (fromIntegral a) (fromIntegral b)
+                          superDiv _ _ = Nothing
