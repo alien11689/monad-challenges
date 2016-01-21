@@ -76,3 +76,17 @@ queryGreek2 gd key = let xs = lookupMay key gd
                     in superDiv max h
                     where superDiv (Just a) (Just b) = divMay (fromIntegral a) (fromIntegral b)
                           superDiv _ _ = Nothing
+
+yLink :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+yLink f (Just x) (Just y) = Just (f x y)
+yLink _ _ _ = Nothing
+
+addSalaries :: [(String, Integer)] -> String -> String -> Maybe Integer
+addSalaries db p1 p2 = yLink (\x y -> x + y) (lookupMay p1 db) (lookupMay p2 db)
+
+mkMaybe :: a -> Maybe a
+mkMaybe = Just
+
+yLink2 :: (a -> b -> c) -> Maybe a -> Maybe b -> Maybe c
+yLink2 f (Just x) (Just y) = mkMaybe (f x y)
+yLink2 _ _ _ = Nothing
