@@ -21,3 +21,6 @@ allPerms f xx yy = genPerms [] xx yy
     where genPerms acc [] _ = acc
           genPerms acc (_:xs) [] = genPerms acc xs yy
           genPerms acc xxx@(x:_) (y:ys) = genPerms (acc ++ [f x y]) xxx ys
+
+allPerms3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+allPerms3 f xx yy zz = allPerms (\x (y,z) -> f x y z) xx (allPerms (,) yy zz)
