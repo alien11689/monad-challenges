@@ -24,3 +24,19 @@ allPerms f xx yy = genPerms [] xx yy
 
 allPerms3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
 allPerms3 f xx yy zz = allPerms (\x (y,z) -> f x y z) xx (allPerms (,) yy zz)
+
+permStep :: [a -> b] -> [a] -> [b]
+permStep (f:fs) xx = permStep' f xx ++ permStep fs xx
+    where permStep' f (x:xs) = f x : permStep' f xs
+          permStep' _ [] = []
+permStep [] _ = []
+
+genFun :: (a -> b -> c) -> [a] -> [b -> c]
+genFun f (x:xs) = f x : genFun f xs
+genFun _ [] = []
+
+allPerms' :: (a -> b -> c) -> [a] -> [b] -> [c]
+allPerms' f a = permStep (genFun f a)
+
+allPerms3' :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+allPerms3' f a b = permStep (permStep (genFun f a) b)
